@@ -19,14 +19,14 @@ namespace BoardFromHome.Core
         public gameType gameType { get; set; }
         public Dictionary<string,int> uniqueItemAmounts { get; set; }
         public string serializedUniqueItemAmounts { get; set; }//Format will be string:int,
-        public string[] ruleSet { get; set; }
+        public Component[] ruleSet { get; set; }
         public string serializedRuleSet { get; set; }//Format will be rule + ,
         public void serializeRuleSet()
         {
             this.serializedRuleSet = "";
-            foreach(string rule in ruleSet)
+            foreach(Component rule in ruleSet)
             {
-                serializedRuleSet += rule + ",";
+                serializedRuleSet += rule.eventTrigger + "|" + rule.outcome + ",";
             }
         }
         public void serializeUniqueItemAmounts()
