@@ -1,8 +1,48 @@
-﻿@page
+﻿@page "{gameId:string}"
 @model BoardFromHome.gameRoomModel
 @{
     ViewData["Title"] = "gameRoom";
 }
 
 <h1>gameRoom</h1>
+<div class="modal fade" id="AlertCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 
+    connection.on("Update", function (userMessage) {
+        Document.getElementById("exampleModalLabel").InnerHTML = userMessage;
+        $("#AlertCenter").modal('show');
+    });
+
+    connection.start().then(function () {
+        //Success
+    }).catch(function (err) {
+        //Sad rip
+        return console.error(err.toString());
+    });
+
+    document.getElementById("card").addEventListener("click", function (event) {
+        connection.invoke("SendMessage", user, message).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    });
+    document.getElementById("deck").addEventListener("click", function (event) {
+        connection.invoke("")
+    });
+</script>
