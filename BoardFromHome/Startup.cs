@@ -35,6 +35,7 @@ namespace BoardFromHome
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddSingleton<ICardGameData, InMemoryGameDb>();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +64,7 @@ namespace BoardFromHome
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapHub<GameHub>("GameHub");
             });
         }
     }

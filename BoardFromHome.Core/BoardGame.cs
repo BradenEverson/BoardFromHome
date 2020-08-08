@@ -17,9 +17,10 @@ namespace BoardFromHome.Core
         public int minPlayers { get; set; }
         public int maxPlayers { get; set; }
         public gameType gameType { get; set; }
+        public string usersInGame { get; set; }
         public Dictionary<string,int> uniqueItemAmounts { get; set; }
         public string serializedUniqueItemAmounts { get; set; }//Format will be string:int,
-        public Component[] ruleSet { get; set; }
+        public List<Component> ruleSet { get; set; }
         public string serializedRuleSet { get; set; }//Format will be rule + ,
         public void serializeRuleSet()
         {
@@ -39,7 +40,11 @@ namespace BoardFromHome.Core
         }
         public void deSerializeRules()
         {
-            this.ruleSet = this.serializedRuleSet.Split(',');
+            this.ruleSet = new List<Component>();
+            foreach(string component in this.serializedRuleSet.Split(','))
+            {
+                this.ruleSet.Add(new Component(component.Split('|')[0], component.Split('|')[1]));
+            }
         }
         public void deSerializeUniqueItems()
         {
